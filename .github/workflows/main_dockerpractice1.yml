@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_97cf9b314072473fbe8a09d11ae60ef0 }}/practiceregistryy:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./dockerfile
 
   deploy:
     runs-on: ubuntu-latest
