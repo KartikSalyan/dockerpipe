@@ -7,18 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Log in to registry
-      uses: docker/login-action@v1
-      with:
-        registry: https://practiceregistryy.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_97cf9b314072473fbe8a09d11ae60ef0 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_00ae67401ea84b10a95fbb0a969d6431 }}
-
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
       with:
-        username: ${practiceregistryy}
-        password: ${Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
         login-server: practiceregistryy.azurecr.io
     
     - name: Run Azure PowerShell script
