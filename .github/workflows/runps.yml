@@ -10,9 +10,9 @@ jobs:
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
       with:
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
-        login-server: pacticetest.azurecr.io
+        username: ${practiceregistryy}
+        password: ${Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5}
+        login-server: practiceregistryy.azurecr.io
     
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
