@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - webapp2121
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to registry
+      uses: docker/login-action@v1
+      with:
+        registry: https://practiceregistryy.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_951d862d423a45058dfa8e594b3cb2c2 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_24a90f03783a4180af8486418c08dc0b }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_951d862d423a45058dfa8e594b3cb2c2 }}/practiceregistryy:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'webapp2121'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_a8815eae630f4e969fda147e6cf8dd93 }}
+        images: 'practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_951d862d423a45058dfa8e594b3cb2c2 }}/practiceregistryy:${{ github.sha }}'
