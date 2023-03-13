@@ -48,9 +48,9 @@ jobs:
       with:
         inlineScript: |
           sudo az login --username kartiksalyan7015@gmail.com --password Goku@op69
-          sudo az acr login -n practiceregistryy --username practiceregistryy --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
-          $acrName = "pacticetest"
-          $acrRepository = "pacticetest/pacticetest"
+          sudo az acr login -n practiceregistryy --username practiceregistryy --password Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5
+          $acrName = "practiceregistryy"
+          $acrRepository = "practiceregistryy/practiceregistryy"
           $maxTags = 14
           $tagsCount = (sudo az acr repository show-tags --name $acrName --repository $acrRepository).length-2
           if ($tagsCount -eq $maxTags){ sudo az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { sudo az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
