@@ -1,11 +1,38 @@
-name: running the powershell script
+name: Build and deploy container app to Azure Web App - praticeregistryy
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to registry
+      uses: docker/login-action@v1
+      with:
+        registry: https://practiceregistryy.azurecr.io
+        username: ${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_cf01eaa600cf4509aca0f34066b899ff }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/practiceregistryy:${{ github.sha }}
+        file: ./Dockerfile
+        
+  script:
     runs-on: ubuntu-latest
-    
+    needs: build
     steps:
     - name: Azure Container Registry Login
       uses: Azure/docker-login@v1
@@ -18,6 +45,29 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-         az acr login -n practiceregistryy
+          sudo az login --username kartiksalyan7015@gmail.com --password Goku@op69
+          sudo az acr login -n practiceregistryy --username practiceregistryy --password Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5
+          $acrName = "practiceregistryy"
+          $acrRepository = "practiceregistryy/practiceregistryy"
+          $maxTags = 10
+          $tagsCount = (sudo az acr repository show-tags --name $acrName --repository $acrRepository).length-2
+          if ($tagsCount -eq $maxTags){ sudo az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { sudo az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
         azPSVersion: "latest"
-        
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: script
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      if: success()
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'praticedockerrrr'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_409b0ca16245480fbb856b07fb25e559 }}
+        images: 'practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/practiceregistryy:${{ github.sha }}'
