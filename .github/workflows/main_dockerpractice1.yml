@@ -41,14 +41,14 @@ jobs:
       with:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        login-server: pacticetest.azurecr.io
+        login-server: practiceregistryy.azurecr.io
     
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          sudo az login --username nishani.12000526@lpu.in --password Njohn526#
-          sudo az acr login -n pacticetest --username pacticetest --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
+          sudo az login --username kartiksalyan7015@gmail.com --password Goku@op69
+          sudo az acr login -n practiceregistryy --username practiceregistryy --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
           $acrName = "pacticetest"
           $acrRepository = "pacticetest/pacticetest"
           $maxTags = 14
