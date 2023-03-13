@@ -20,14 +20,14 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://practiceregistryy.azurecr.io
-        username: ${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_cf01eaa600cf4509aca0f34066b899ff }}
+        username: ${{ secrets.AzureAppService_ContainerUsername }}
+        password: ${{ secrets.AzureAppService_ContainerPassword }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: practiceregistryy.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/practiceregistryy:${{ github.sha }}
+        tags: practiceregistryy.azurecr.io/${{ secrets.AzureAppService_Container }}/practiceregistryy:${{ github.sha }}
         file: ./Dockerfile
         
   script:
