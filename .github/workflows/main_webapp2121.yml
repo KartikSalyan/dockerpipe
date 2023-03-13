@@ -48,7 +48,7 @@ jobs:
       with:
         inlineScript: |
           sudo az login --username kartiksalyan7015@gmail.com --password Goku@op69
-          sudo az acr login -n practiceregistryy --username practiceregistryy --password Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5
+          # sudo az acr login -n practiceregistryy --username practiceregistryy --password Dc4UV7/O7sfGtKet9HPjW6ItOYCQCORJvoEXa9xu+X+ACRBm9Cg5
           # $acrName = "practiceregistryy"
           # $acrRepository = "practiceregistryy/practiceregistryy"
           # $maxTags = 14
